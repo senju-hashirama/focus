@@ -1,9 +1,10 @@
+#! /bin/python
 import os
 import argparse
 from pathlib import Path
 
 def main(gargs):
-    print(gargs)
+    
     if gargs.Deactivate:
         
         sites = ["www.instagram.com"]
@@ -28,9 +29,10 @@ def main(gargs):
                 data[hosts] = data[hosts][1:]
                 if [i.strip() for i in data[hosts].split()[1:]]!=sites:
                          print("resetting")
-                         host.seek(0,0)
-                         data[hosts]="127.0.0.1 {}\n".format(" ".join(sites))
+                         host.seek(0)
+                         data[hosts]="127.0.0.1 {}\n\n".format(" ".join(sites))
                          host.writelines(data)
+                         host.truncate()
                 else:
                    print(data)
                    host.seek(0,0)
@@ -58,5 +60,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-f","--File", help="Text file with all domains to block")
     parser.add_argument("-d", "--Deactivate", help="Deactivate focus", action="store_false")
+    parser.add_argument("-s","--Site",help="Block a particular website")
     args = parser.parse_args()
     main(args)
